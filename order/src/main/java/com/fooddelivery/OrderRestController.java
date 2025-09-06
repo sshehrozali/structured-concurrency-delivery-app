@@ -15,7 +15,7 @@ public class OrderRestController {
 
     @PostMapping("/order")
     public void newOrder() {
-        orderService.newOrder();
+        orderService.newOrder("");
     }
 
 }
