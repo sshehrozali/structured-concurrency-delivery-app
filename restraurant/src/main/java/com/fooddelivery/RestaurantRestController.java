@@ -13,8 +13,8 @@ public class RestaurantRestController {
         this.restaurantService = restaurantService;
     }
 
-    @PostMapping("/assign/order")
-    public void assignOrder() {
+    @PostMapping("/receive/order")
+    public void receiveOrder() {
         restaurantService.assignOrder();
     }
 }
