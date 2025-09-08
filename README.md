@@ -1,4 +1,4 @@
-Structured Concurrency & Virtual Threads — README
+Structured Concurrency & Virtual Threads
 =================================================
 
 **Problem:** Concurrency is hard—threads are expensive, tasks leak, errors get lost.**Solution:** Use **virtual threads** (cheap, one-per-task) with **structured concurrency** (tasks live and die within a scope) to make code simple, safe, and scalable.
