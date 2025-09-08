@@ -18,6 +18,6 @@ public class CustomerRestController {
     @PostMapping("/place/order/{orderId}")
     public String placeNewOrder(@PathVariable(required = true) String orderId) {
         customerService.placeOrder();
-        return "";
+        return "Order placed";
     }
 }

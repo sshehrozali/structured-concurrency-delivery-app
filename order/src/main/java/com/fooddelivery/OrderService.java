@@ -1,26 +1,41 @@
 package com.fooddelivery;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
+
+import java.util.concurrent.StructuredTaskScope;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
+    private final RestClient restClient;
     private final MessagingBroker messagingBroker;
 
     public OrderService(MessagingBroker messagingBroker) {
+        this.restClient = RestClient.builder()
+                .baseUrl("")
+                .build();
+
         this.messagingBroker = messagingBroker;
     }
 
-    public void newOrder(String orderId) {
-        // 1. call HTTP restaurant service
-        var response = restTemplate.postForEntity("restaurant api", orderId, String.class);
+    public void newOrder(String orderId) throws InterruptedException {
 
-        // 2. publish message to assign rider
-        messagingBroker.publish();
+        var scope = StructuredTaskScope.open();
+        var assignRestaurantTask = scope.fork(this::callRestaurantService);
+        var assignRiderTask = scope.fork(() -> messagingBroker.publish("area XYZ"));
+
+        scope.join();
+
+        var restaurantResponse = assignRestaurantTask.get();
+    }
+
+    private String callRestaurantService() {
+        return restClient.post()
+                .uri("")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .body(String.class);
     }
 }

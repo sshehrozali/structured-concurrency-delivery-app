@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class DummyKafkaProducer implements MessagingBroker{
 
     @Override
-    public void publish() {
+    public void publish(String location) {
         // publish message on kafka
     }
 }

@@ -2,5 +2,5 @@ package com.fooddelivery;
 
 public interface MessagingBroker {
 
-    void publish();
+    void publish(String location);
 }

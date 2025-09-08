@@ -1,18 +1,28 @@
 package com.fooddelivery;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @Service
 public class CustomerService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestClient restClient;
 
-    public void placeOrder() {
+    public CustomerService() {
+        this.restClient = RestClient.builder()
+                .baseUrl("order-service/api/v1")
+                .build();
+    }
+
+
+    public void placeOrder(String orderId) {
         // call HTTP order service
-        var response = restTemplate
-                .getForEntity("order api", String.class);
+        var response = restClient
+                .get()
+                .uri("/new/order/{orderId}", orderId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .body(String.class);
     }
 }
