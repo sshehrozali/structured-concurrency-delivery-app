@@ -1,5 +1,6 @@
 package com.fooddelivery;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,8 @@ public class OrderRestController {
     }
 
     @PostMapping("/new/order/{orderId}")
-    public void newOrder(@PathVariable String orderId) throws InterruptedException {
-        orderService.newOrder(orderId);
+    public ResponseEntity<Boolean> newOrder(@PathVariable String orderId) throws InterruptedException {
+        return ResponseEntity.ok(orderService.newOrder(orderId));
     }
 
 }

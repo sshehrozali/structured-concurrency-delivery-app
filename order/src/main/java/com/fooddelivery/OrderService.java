@@ -20,7 +20,7 @@ public class OrderService {
         this.messagingBroker = messagingBroker;
     }
 
-    public void newOrder(String orderId) throws InterruptedException {
+    public boolean newOrder(String orderId) throws InterruptedException {
 
         var scope = StructuredTaskScope.open();
         var assignRestaurantTask = scope.fork(this::callRestaurantService);
@@ -28,14 +28,14 @@ public class OrderService {
 
         scope.join();
 
-        var restaurantResponse = assignRestaurantTask.get();
+        return assignRestaurantTask.get();
     }
 
-    private String callRestaurantService() {
+    private Boolean callRestaurantService() {
         return restClient.post()
                 .uri("")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .body(String.class);
+                .body(Boolean.class);
     }
 }
